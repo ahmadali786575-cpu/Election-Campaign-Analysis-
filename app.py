@@ -675,6 +675,8 @@ def voting_analysis():
 )
 
 
+
+
 @app.route("/about")
 def about():
 
@@ -712,6 +714,8 @@ def about():
     
   
     )
+
+
 
 @app.route("/prediction")
 def prediction():
@@ -781,6 +785,14 @@ def predict():
         "Incumbent": incumbent
     }])
 
+    print("Sample:")
+    print(sample)
+
+    print("Sample Columns:")
+    print(sample.columns.tolist())
+
+    print("Model Features:")
+    print(model.feature_names_in_)
     prediction = model.predict(sample)[0]
 
     probability = round(

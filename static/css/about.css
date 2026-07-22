@@ -1,5 +1,7 @@
 /* ================= About Header ================= */
-
+.menu-toggle{
+    display: none;
+}
 .about-header{
     width:100%;
     height:160px;
