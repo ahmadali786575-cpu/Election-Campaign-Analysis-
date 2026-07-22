@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Voting Analysis</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static',filename='css/voting.css') }}">
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/sidebar.css') }}">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+<body>
+    {% include "sidebar.html" %}
+    <div class="main-content">
+
+<div class="header">
+
+    <div class="left">
+
+        <div class="icon">
+            🌐
+        </div>
+
+            <h1>Voting <br> Analysis</h1>
+
+            <p>
+                Detailed insights into voter turnout,
+                votes polled and voting patterns
+                across states and years.
+            </p>
+
+        </div>
+
+    <div class="right">
+
+        <select id="yearSelect">
+
+            <option value="All" {% if selected_year=="All" %}selected{% endif %}>
+                All Years
+            </option>
+
+            {% for y in years %}
+            <option value="{{ y }}"
+                {% if selected_year==y|string %}selected{% endif %}>
+                {{ y }}
+            </option>
+            {% endfor %}
+
+        </select>
+
+        <select id="stateSelect" name="state">
+
+            <option value="All"
+                {% if selected_state=="All" %}selected{% endif %}>
+                All States
+            </option>
+
+            {% for s in states %}
+            <option value="{{ s }}"
+                {% if selected_state==s %}selected{% endif %}>
+                {{ s }}
+            </option>
+            {% endfor %}
+
+        </select>
+
+        <select id="partySelect" name="party">
+
+            <option value="All"
+                {% if selected_party=="All" %}selected{% endif %}>
+                All Parties
+            </option>
+
+            {% for p in parties %}
+            <option value="{{ p }}"
+                {% if selected_party==p %}selected{% endif %}>
+                {{ p }}
+            </option>
+            {% endfor %}
+
+        </select>
+
+        <select id="constituencySelect" name="constituency">
+
+            <option value="All"
+                {% if selected_constituency=="All" %}selected{% endif %}>
+                All Constituencies
+            </option>
+
+            {% for c in constituencies %}
+            <option value="{{ c }}"
+                {% if selected_constituency==c %}selected{% endif %}>
+                {{ c }}
+            </option>
+            {% endfor %}
+
+        </select>
+
+        <i class="fa-solid fa-bell icon-btn"></i>
+
+        <i class="fa-solid fa-gear icon-btn"></i>
+
+        <div class="profile">
+
+            <div class="avatar">
+                👤
+            </div>
+
+            <span>Admin</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- Voting KPI Cards -->
+
+<div class="voting-cards">
+
+    <div class="vote-card blue">
+
+        <div class="icon-circle">
+            <i class="fa-solid fa-users"></i>
+        </div>
+
+        <div class="card-text">
+            <h4>Total Votes Polled</h4>
+            <h2>{{ "{:.1f}".format(total_votes/1000000) }}M</h2>
+            <p>({{ "{:,}".format(total_votes) }})</p>
+            <span>
+                {% if selected_year == "All" %}
+                    All Years
+                {% else %}
+                    {{ selected_year }}
+                {% endif %}
+                </span>
+        </div>
+
+    </div>
+
+    <div class="vote-card green">
+
+        <div class="icon-circle">
+            <i class="fa-solid fa-chart-line"></i>
+        </div>
+
+        <div class="card-text">
+            <h4>Average Voter Turnout</h4>
+            <h2>{{ average_turnout }}%</h2>
+            <span>
+                {% if selected_year == "All" %}
+                    All Years
+                {% else %}
+                    {{ selected_year }}
+                {% endif %}
+                </span>
+        </div>
+
+    </div>
+
+    <div class="vote-card orange">
+
+        <div class="icon-circle">
+            <i class="fa-solid fa-trophy"></i>
+        </div>
+
+        <div class="card-text">
+            <h4>Highest Turnout State</h4>
+            <h2>{{ highest_state }}</h2>
+            <p>{{ highest_turnout }}%</p>
+            <span>
+                {% if selected_year == "All" %}
+                    All Years
+                {% else %}
+                    {{ selected_year }}
+                {% endif %}
+            </span>
+        </div>
+
+    </div>
+
+    <div class="vote-card red">
+
+        <div class="icon-circle">
+            <i class="fa-solid fa-chart-line"></i>
+        </div>
+
+        <div class="card-text">
+            <h4>Lowest Turnout State</h4>
+            <h2>{{ lowest_state }}</h2>
+            <p>{{ lowest_turnout }}%</p>
+            <span>
+                {% if selected_year == "All" %}
+                    All Years
+                {% else %}
+                    {{ selected_year }}
+                {% endif %}
+            </span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- Voting Charts -->
+<!-- ========================= -->
+<div>
+    <div class="charts">
+
+    <div class="chart-card">
+        <h3>Votes Polled Over Years</h3>
+
+        <canvas id="votesTrend"></canvas>
+
+    </div>
+
+    <div class="chart-card">
+        <h3>Average Voter Turnout (%)</h3>
+
+        <canvas id="turnoutTrend"></canvas>
+
+    </div>
+</div>
+<!-- ========================= -->
+<!-- Second Row -->
+<!-- ========================= -->
+
+<div class="charts">
+
+    <!-- Top Constituencies -->
+
+    <div class="chart-card">
+
+        <h3>
+    Top 10 Constituencies by Votes Polled
+    {% if selected_year != "All" %}
+    ({{ selected_year }})
+    {% else %}
+    (All Years)
+    {% endif %}
+    </h3>
+
+        <table class="vote-table">
+
+            <thead>
+
+                <tr>
+                    <th>#</th>
+                    <th>Constituency</th>
+                    <th>State</th>
+                    <th>Votes Polled</th>
+                    <th>Turnout (%)</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for row in top_constituencies %}
+
+                <tr>
+
+                <td>{{ loop.index }}</td>
+
+                <td>{{ row["Constituency"] }}</td>
+
+                <td>{{ row["State"] }}</td>
+
+                <td>{{ "{:,}".format(row["Votes_Polled"]|int) }}</td>
+
+                <td>{{ "%.2f"|format(row["Turnout"]) }}%</td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="chart-card">
+
+    <h3>
+    Top 10 States by Votes Polled
+    {% if selected_year != "All" %}
+    ({{ selected_year }})
+    {% else %}
+    (All Years)
+    {% endif %}
+    </h3>
+
+    <canvas id="stateVotesChart"></canvas>
+
+</div>
+
+<!-- ========================= -->
+<!-- Voting Insights -->
+<!-- ========================= -->
+
+<div class="insights-wrapper">
+
+<div class="insights-box">
+
+<h3>
+Voting Insights
+{% if selected_year!="All" %}
+({{selected_year}})
+{% else %}
+(All Years)
+{% endif %}
+</h3>
+
+<div class="insight-row">
+
+<div class="insight-item">
+
+<div class="insight-icon blue">
+<i class="fa-solid fa-box-ballot"></i>
+</div>
+
+<div>
+
+<h4>Highest Votes Polled</h4>
+
+<h2>{{ "{:.1f}".format(highest_votes/1000000) }} Million</h2>
+
+<p>Total across selected filters</p>
+
+</div>
+
+</div>
+
+<div class="insight-item">
+
+<div class="insight-icon green">
+<i class="fa-solid fa-trophy"></i>
+</div>
+
+<div>
+
+<h4>Highest Turnout</h4>
+
+<h2>{{ highest_turnout_name }}</h2>
+
+<p>{{ highest_turnout_value }}%</p>
+
+</div>
+
+</div>
+
+<div class="insight-item">
+
+<div class="insight-icon red">
+<i class="fa-solid fa-chart-line"></i>
+</div>
+
+<div>
+
+<h4>Lowest Turnout</h4>
+
+<h2>{{ lowest_turnout_name }}</h2>
+
+<p>{{ lowest_turnout_value }}%</p>
+
+</div>
+
+</div>
+
+<div class="insight-item">
+
+<div class="insight-icon purple">
+<i class="fa-solid fa-users"></i>
+</div>
+
+<div>
+
+<h4>Average Turnout</h4>
+
+<h2>{{ average_turnout_card }}%</h2>
+
+<p>Across selected filters</p>
+
+</div>
+
+</div>
+
+<div class="insight-item">
+
+<div class="insight-icon orange">
+<i class="fa-solid fa-star"></i>
+</div>
+
+<div>
+
+<h4>Most Active State</h4>
+
+<h2>{{ most_active_state }}</h2>
+
+<p>{{ "{:,}".format(most_active_votes) }} Votes</p>
+
+</div>
+
+</div>
+</div>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script id="vote_years" type="application/json">
+{{ vote_years|tojson }}
+</script>
+
+<script id="votes_million" type="application/json">
+{{ votes_million|tojson }}
+</script>
+
+<script id="turnout_years" type="application/json">
+{{ turnout_years|tojson }}
+</script>
+
+<script id="turnout_values" type="application/json">
+{{ turnout_values|tojson }}
+</script>
+
+<script id="state_names" type="application/json">
+{{ state_names|tojson }}
+</script>
+
+<script id="state_votes" type="application/json">
+{{ state_votes_million|tojson }}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<script>
+function updateFilters(){
+
+    const year =
+    document.getElementById("yearSelect").value;
+
+    const state =
+    document.getElementById("stateSelect").value;
+
+    const party =
+    document.getElementById("partySelect").value;
+
+    const constituency =
+    document.getElementById("constituencySelect").value;
+
+    window.location.href =
+    "/voting-analysis?"
+    + "year=" + encodeURIComponent(year)
+    + "&state=" + encodeURIComponent(state)
+    + "&party=" + encodeURIComponent(party)
+    + "&constituency=" + encodeURIComponent(constituency);
+}
+
+document.getElementById("yearSelect").addEventListener("change", updateFilters);
+document.getElementById("stateSelect").addEventListener("change", updateFilters);
+document.getElementById("partySelect").addEventListener("change", updateFilters);
+document.getElementById("constituencySelect").addEventListener("change", updateFilters);
+const vote_years = JSON.parse(document.getElementById("vote_years").textContent);
+const votes_million = JSON.parse(document.getElementById("votes_million").textContent);
+
+const turnout_years = JSON.parse(document.getElementById("turnout_years").textContent);
+const turnout_values = JSON.parse(document.getElementById("turnout_values").textContent);
+
+const votesCanvas = document.getElementById("votesTrend");
+
+const votesCtx = votesCanvas.getContext("2d");
+
+new Chart(votesCtx,{
+
+    type:"line",
+
+    data:{
+        labels:vote_years,
+        datasets:[{
+            label:"Votes Polled (Millions)",
+
+            data:votes_million,
+
+            borderColor:"#2563eb",
+
+            backgroundColor:"#2563eb",
+
+            borderWidth:4,
+
+            pointRadius:7,
+
+            pointHoverRadius:9,
+
+            pointBackgroundColor:"#2563eb",
+
+            pointBorderColor:"#ffffff",
+
+            pointBorderWidth:2,
+
+            tension:.35,
+
+            fill:false
+        }]
+    },
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+        animation:false,
+
+        devicePixelRatio:2,
+
+        layout:{
+            padding:{
+                top:35,
+                left:20,
+                right:35,
+                bottom:35
+            }
+        },
+
+        plugins:{
+
+            legend:{
+                position:"top",
+
+                labels:{
+                    color:"#ffffff",
+                    font:{
+                        size:16,
+                        weight:"bold"
+                    },
+                    padding:25
+                }
+            }
+
+        },
+
+        scales:{
+
+            x:{
+
+                offset:true,
+
+                ticks:{
+                    color:"#ffffff",
+                    padding:15,
+                    font:{
+                        size:18,
+                        weight:"bold"
+                    }
+                },
+
+                grid:{
+                    color:"rgba(255,255,255,.06)"
+                },
+
+                border:{
+                    color:"rgba(255,255,255,.15)"
+                }
+
+            },
+
+            y:{
+
+                beginAtZero:false,
+
+                ticks:{
+                    color:"#ffffff",
+                    padding:10,
+                    font:{
+                        size:16,
+                        weight:"bold"
+                    }
+                },
+
+                grid:{
+                    color:"rgba(255,255,255,.06)"
+                },
+
+                border:{
+                    color:"rgba(255,255,255,.15)"
+                }
+
+            }
+
+        }
+
+    }
+
+});
+new Chart(document.getElementById("turnoutTrend"),{
+
+    type:"bar",
+
+    data:{
+        labels:turnout_years,
+
+        datasets:[{
+
+            label:"Average Turnout (%)",
+
+            data:turnout_values,
+
+            backgroundColor:"#7c3aed",
+
+            borderRadius:12,
+
+            borderSkipped:false,
+
+            barThickness:90,
+
+            maxBarThickness:100
+
+        }]
+    },
+
+    plugins:[ChartDataLabels],
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        layout:{
+            padding:{
+                top:40,
+                left:20,
+                right:20,
+                bottom:40
+            }
+        },
+
+        plugins:{
+
+            legend:{
+                position:"top",
+
+                labels:{
+                    color:"#ffffff",
+                    font:{
+                        size:16,
+                        weight:"bold"
+                    }
+                }
+            },
+
+            datalabels:{
+
+                color:"#ffffff",
+
+                anchor:"end",
+
+                align:"top",
+
+                offset:5,
+
+                font:{
+                    size:15,
+                    weight:"bold"
+                },
+
+                formatter:function(value){
+                    return value.toFixed(1)+"%";
+                }
+
+            }
+
+        },
+
+        scales:{
+
+            x:{
+
+                offset:true,
+
+                ticks:{
+
+                    color:"#ffffff",
+
+                    padding:15,
+
+                    font:{
+                        size:18,
+                        weight:"bold"
+                    }
+
+                },
+
+                grid:{
+                    display:false,
+                    drawBorder:false
+                },
+
+                border:{
+                    display:false
+                }
+
+            },
+
+            
+
+            y:{
+
+                beginAtZero:true,
+
+                max:100,
+
+                ticks:{
+
+                    stepSize:10,
+
+                    color:"#ffffff",
+
+                    font:{
+                        size:15,
+                        weight:"bold"
+                    },
+
+                    callback:function(value){
+                        return value+"%";
+                    }
+
+                },
+
+                grid:{
+                    color:"rgba(255,255,255,.08)"
+                }
+
+            }
+
+        }
+
+    }
+
+});
+
+const state_names =
+JSON.parse(document.getElementById("state_names").textContent);
+
+const state_votes =
+JSON.parse(document.getElementById("state_votes").textContent);
+
+new Chart(document.getElementById("stateVotesChart"), {
+
+    type: "bar",
+
+    data: {
+        labels: state_names,
+
+        datasets: [{
+            data: state_votes,
+
+            backgroundColor: "#2196F3",
+
+            borderRadius: 8,
+
+            barThickness:25,
+
+            maxBarThickness:28
+
+        }]
+    },
+
+    plugins: [ChartDataLabels],
+
+    options: {
+                layout:{
+            padding:{
+                left:25,
+                right:40,
+                top:20,
+                bottom:20
+            }
+        },
+
+        indexAxis: "y",
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+                display: false
+            },
+
+            datalabels: {
+
+                color: "#ffffff",
+
+                anchor: "end",
+
+                align: "right",
+
+                formatter: function(value){
+                    return value.toFixed(2)+"M";
+                }
+
+            }
+
+        },
+
+        scales: {
+
+            x:{
+
+                grid:{
+                    color:"rgba(255,255,255,.05)"
+                },
+
+                ticks:{
+
+                    color:"#ffffff",
+
+                    font:{
+                        size:15,
+                        weight:"bold"
+                    },
+
+                    callback:function(value){
+                        return value+"M";
+                    }
+
+                }
+
+            },
+
+            y:{
+
+                grid:{
+                    display:false
+                },
+
+                ticks:{
+
+                    color:"#ffffff",
+
+                    font:{
+                        size:15,
+                        weight:"bold"
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+</div>
+</body>
+
+</html>
+
+
+

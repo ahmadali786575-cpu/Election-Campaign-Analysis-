@@ -1,0 +1,147 @@
+/* ---------------- Background ---------------- */
+
+.stApp{
+    background-color:#F5F7FB;
+}
+
+/* ---------------- Title ---------------- */
+
+h1{
+    color:#0B1F4D;
+    font-weight:800;
+    font-size:40px;
+}
+
+p{
+    color:#5F6B7A;
+}
+
+/* ---------------- KPI Cards ---------------- */
+
+div[data-testid="metric-container"]{
+    background:white;
+    border-radius:18px;
+    padding:18px;
+    border:1px solid #E6EAF0;
+    box-shadow:0px 4px 15px rgba(0,0,0,0.08);
+    text-align:center;
+}
+
+div[data-testid="metric-container"]:hover{
+    transform:translateY(-4px);
+    transition:0.3s;
+    box-shadow:0px 8px 20px rgba(0,0,0,.15);
+}
+
+/* Metric Label */
+
+div[data-testid="metric-container"] label{
+    color:#3A4B5C;
+    font-size:15px;
+    font-weight:600;
+}
+
+/* Metric Value */
+
+div[data-testid="metric-container"] div{
+    color:#0B1F4D;
+    font-weight:bold;
+}
+
+/* ---------------- Sidebar ---------------- */
+
+section[data-testid="stSidebar"]{
+    background:#071C44;
+}
+
+section[data-testid="stSidebar"] *{
+    color:white;
+}
+
+/* Sidebar Selectbox */
+
+.stSelectbox div[data-baseweb="select"]{
+    background:#173A72;
+    border-radius:10px;
+}
+
+/* ---------------- Buttons ---------------- */
+
+.stButton>button{
+    background:#2563EB;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    padding:10px;
+    width:100%;
+}
+
+.stButton>button:hover{
+    background:#1D4ED8;
+}
+
+/* ---------------- Dataframe ---------------- */
+
+div[data-testid="stDataFrame"]{
+    background:white;
+    border-radius:15px;
+    padding:10px;
+    box-shadow:0px 5px 15px rgba(0,0,0,.08);
+}
+
+/* ---------------- Charts ---------------- */
+
+.js-plotly-plot{
+    background:white;
+    border-radius:15px;
+    padding:10px;
+    box-shadow:0px 5px 15px rgba(0,0,0,.08);
+}
+
+/* ---------------- Info Box ---------------- */
+
+.stAlert{
+    border-radius:15px;
+    background:white;
+    border:1px solid #EAEAEA;
+}
+
+/* ---------------- Horizontal Line ---------------- */
+
+hr{
+    border:1px solid #E6EAF0;
+}
+
+/* ---------------- Scroll Bar ---------------- */
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#2F6BFF;
+    border-radius:20px;
+}
+
+
+
+
+/* ML sidebar */
+
+/* ---------------- Sidebar ---------------- */
+
+section[data-testid="stSidebar"]{
+    width:260px !important;
+    position:fixed !important;
+    top:0;
+    left:0;
+    height:100vh;
+    z-index:999;
+}
+
+section[data-testid="stSidebar"][aria-expanded="false"]{
+    width:70px !important;
+    min-width:70px !important;
+}
+

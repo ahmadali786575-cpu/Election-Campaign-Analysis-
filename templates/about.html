@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About Project</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+    {% include "sidebar.html" %}
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar" id="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            <i class="fa-solid fa-chart-column"></i>
+        </div>
+
+        <h2>Data Alchemists</h2>
+
+    </div>
+
+    <div class="menu">
+
+        <p class="title">MAIN</p>
+
+        <a href="{{ url_for('dashboard') }}" class="menu-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="{{ url_for('voting_analysis') }}" class="menu-item">
+            <i class="fa-solid fa-square-poll-vertical"></i>
+            <span>Voting Analysis</span>
+        </a>
+
+        <a href="{{ url_for('prediction') }}" class="menu-item">
+            <i class="fa-solid fa-brain"></i>
+            <span>ML Prediction</span>
+        </a>
+
+        <a href="{{ url_for('about') }}" class="menu-item active">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>About Project</span>
+        </a>
+
+    </div>
+
+</div>
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="main-content">
+
+    <!-- ================= ABOUT HEADER ================= -->
+
+<!-- ================= About Header ================= -->
+
+        <section class="about-header">
+
+            <div class="about-left">
+
+                <div class="about-title">
+
+                    <div class="about-icon">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+
+                    <h1>About Project</h1>
+
+                </div>
+
+                <p>
+                    Learn more about the Election Campaign Analysis & ML Prediction Dashboard
+                </p>
+
+            </div>
+
+            <img src="{{ url_for('static', filename='images/parliament.png') }}"
+                class="parliament-img"
+                alt="Parliament">
+
+        </section>
+                <!-- ================= Project Overview ================= -->
+
+        <section class="project-overview">
+
+            <!-- Left Image -->
+
+            <div class="overview-image">
+
+                <img src="{{ url_for('static', filename='images/project_overview.png') }}"
+                    class="overview-img"
+                    alt="Project Overview">
+
+            </div>
+
+            <!-- Right Content -->
+
+            <div class="overview-content">
+
+                <h2>Election Campaign Analysis &<br>ML Prediction Dashboard</h2>
+
+                <p>
+                    This project analyzes election data of 10 major Indian states across
+                    the years 2009, 2014, 2019 and 2024. It provides deep insights into
+                    voting patterns, party performance, campaign expenditure and voter
+                    behavior.
+                </p>
+
+                <p>
+                    The dashboard also uses Machine Learning to predict the winning
+                    party in a constituency based on various factors.
+                </p>
+
+                <div class="overview-stats">
+
+                    <div class="stat-box">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <div>
+                            <h3>{{ years_covered }}</h3>
+                            <span>Years Covered</span>
+                            <p>2009 - 2024</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-box">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <h3>{{ states_covered }}</h3>
+                            <span>States Covered</span>
+                            <p>Indian States</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-box">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <div>
+                            <h3>{{ constituencies_covered }}</h3>
+                            <span>Constituencies</span>
+                            <p>Total Seats</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-box">
+                        <i class="fa-solid fa-users"></i>
+                        <div>
+                            <h3>{{ parties_covered }}</h3>
+                            <span>Parties</span>
+                            <p>Political Parties</p>
+                        </div>
+                    </div>
+
+                </div>
+                
+
+            </div>
+
+        </section>
+
+        <!-- ================= Bottom Cards ================= -->
+
+        <section class="bottom-cards">
+
+            <!-- Card 1 -->
+            <div class="bottom-card">
+
+                <h3>
+                    <i class="fa-solid fa-bullseye"></i>
+                    Project Objectives
+                </h3>
+
+                <ul>
+                    <li>Analyze election campaign spending patterns</li>
+                    <li>Compare vote share & seat distribution</li>
+                    <li>Analyze state-wise & constituency-wise elections</li>
+                    <li>Track voting trends across years</li>
+                    <li>Predict winning party using ML models</li>
+                    <li>Provide interactive visualizations</li>
+                </ul>
+
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bottom-card">
+
+                <h3>
+                    <i class="fa-solid fa-star"></i>
+                    Key Features
+                </h3>
+
+                <ul>
+                    <li>Interactive Dashboard</li>
+                    <li>Voting Trend Analysis</li>
+                    <li>Campaign Expenditure Analysis</li>
+                    <li>Party Performance Comparison</li>
+                    <li>ML Based Winner Prediction</li>
+                    <li>Download Reports</li>
+                </ul>
+
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bottom-card">
+
+                <h3>
+                    <i class="fa-solid fa-database"></i>
+                    Dataset Information
+                </h3>
+
+                <div class="info-row">
+                    <span>States</span>
+                    <span>{{ states_covered }}</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Years</span>
+                    <span>2009, 2014, 2019, 2024</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Constituencies</span>
+                    <span>{{ constituencies_covered }}</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Candidates</span>
+                    <span>{{ records }}</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Political Parties</span>
+                    <span>{{ parties_covered }}</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Votes Polled</span>
+                    <span>{{ (total_votes/1000000)|round(1) }} M</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Campaign Spending</span>
+                    <span>₹ {{ total_spending }} Cr</span>
+                </div>
+
+            </div>
+
+            <!-- Card 4 -->
+            <div class="bottom-card">
+
+                <h3>
+                    <i class="fa-solid fa-brain"></i>
+                    Machine Learning
+                </h3>
+
+                <div class="info-row">
+                    <span>Task</span>
+                    <span>Winner Prediction</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Algorithm</span>
+                    <span>Random Forest</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Accuracy</span>
+                    <span>83.2</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Features</span>
+                    <span>12 Features</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Prediction</span>
+                    <span>Winning Party</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Evaluation</span>
+                    <span>Cross Validation</span>
+                </div>
+
+            </div>
+
+        </section>
+        <!-- ================= Technologies & Developer ================= -->
+
+<section class="tech-developer">
+
+    <!-- Technologies Used -->
+
+    <div class="tech-card">
+
+        <h3>
+            <i class="fa-solid fa-code"></i>
+            Technologies Used
+        </h3>
+
+        <div class="tech-icons">
+
+            <div class="tech-box">
+                <i class="fa-brands fa-python python"></i>
+                <span>Python</span>
+            </div>
+
+            <div class="tech-box">
+                <i class="fa-solid fa-flask flask"></i>
+                <span>Flask</span>
+            </div>
+
+            <div class="tech-box">
+                <i class="fa-solid fa-chart-column pandas"></i>
+                <span>Pandas</span>
+            </div>
+
+            <div class="tech-box">
+                <i class="fa-solid fa-chart-line chartjs"></i>
+                <span>Chart.js</span>
+            </div>
+
+            <div class="tech-box">
+                <i class="fa-brands fa-html5 html"></i>
+                <span>HTML</span>
+            </div>
+
+            <div class="tech-box">
+                <i class="fa-brands fa-css3-alt css"></i>
+                <span>CSS</span>
+            </div>
+
+            <div class="tech-box">
+                <i class="fa-brands fa-js js"></i>
+                <span>JavaScript</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Developer -->
+
+    <div class="developer-card">
+
+    <h3>
+        <i class="fa-solid fa-user"></i>
+        Developer
+    </h3>
+
+    <div class="developer-content">
+
+        <!-- Left -->
+
+        <div class="developer-left">
+
+            <div class="developer-img-box">
+                <img src="{{ url_for('static', filename='images/profile.png') }}"
+                    class="developer-img"
+                    alt="Developer">
+            </div>
+            <div class="developer-info">
+
+                <h2>Ahmad Ali</h2>
+
+                <p>B-Tech CSE (DSAI-A) Sipher Internship Project</p>
+
+                <span>
+                    <i class="fa-regular fa-envelope"></i>
+                    ahmadali@example.com
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    India
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- Right -->
+
+        <div class="developer-quote">
+
+            <p>
+                <i class="fa-solid fa-quote-left quote-left"></i>
+
+                Building data-driven solutions to understand elections
+                better and empower informed decisions.
+
+                <i class="fa-solid fa-quote-right quote-right"></i>
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    </div>
+
+</section>
+
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>ML Prediction</title>
+    
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/prediction.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<!-- ===== Header Section Start ===== -->
+
+<div class="top-header">
+
+    <div class="page-title">
+
+        <div class="title-icon">
+            🌐
+        </div>
+
+        <div>
+            <h1>ML Prediction</h1>
+            <p>
+                Predict the winning party for a constituency using your election campaign dataset
+            </p>
+        </div>
+
+    </div>
+
+    <div class="header-right">
+
+        <select class="year-select"
+            onchange="window.location='/prediction?year='+this.value">
+
+        <option value="All" {% if selected_year=="All" %}selected{% endif %}>
+                All
+            </option>
+
+            {% for y in years %}
+
+            <option value="{{ y }}"
+                {% if selected_year|string == y|string %}selected{% endif %}>
+                {{ y }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <div class="header-icons">
+            <span>🔔</span>
+            <span>⚙️</span>
+
+            <div class="profile">
+                <div class="avatar">👤</div>
+                <span>Admin</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="stats-container">
+
+    <div class="stat-card blue">
+
+        <div class="icon blue-icon">
+            <i class="fa-solid fa-user-tie"></i>
+        </div>
+
+        <div class="details">
+            <h5>Total Constituencies</h5>
+            <h2>{{ total_constituencies }}</h2>
+            <span>(10 States)</span>
+        </div>
+
+    </div>
+
+    <div class="stat-card green">
+
+        <div class="icon green-icon">
+            <i class="fa-solid fa-users"></i>
+        </div>
+
+        <div class="details">
+            <h5>Total Parties</h5>
+            <h2>{{ total_parties }}</h2>
+            <span>Registered Parties</span>
+        </div>
+
+    </div>
+
+    <div class="stat-card orange">
+
+        <div class="icon orange-icon">
+            <i class="fa-solid fa-file-lines"></i>
+        </div>
+
+        <div class="details">
+            <h5>Total Records</h5>
+            <h2>{{ total_records }}</h2>
+            <span>In Dataset</span>
+        </div>
+
+    </div>
+
+    <div class="stat-card purple">
+
+        <div class="icon purple-icon">
+            <i class="fa-solid fa-crosshairs"></i>
+        </div>
+
+        <div class="details">
+            <h5>Model Accuracy</h5>
+            <h2>83.2</h2>
+            <span>Trained on 2009–2019</span>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===== Header Section End ===== -->
+<div class="prediction-container">
+
+    <div class="form-card">
+
+    <div class="card-title">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>Enter Constituency Details</span>
+    </div>
+
+    <form action="/predict" method="POST">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>State</label>
+                <select name="state">
+
+                    <option value="">Select State</option>
+
+                    {% for state in states %}
+
+                    <option value="{{ state }}">
+                        {{ state }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Constituency</label>
+                <select name="constituency">
+
+                    <option value="">Select Constituency</option>
+
+                    {% for constituency in constituencies %}
+
+                    <option value="{{ constituency }}">
+                        {{ constituency }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label>Candidate Age</label>
+                <input type="number" name="age" required>
+            </div>
+
+            <div class="form-group">
+
+                <label>Registered Electors</label>
+
+                <input type="number" name="electors">
+
+            </div>
+
+            <div class="form-group">
+                <label>Incumbent</label>
+                <select name="incumbent">
+
+                    <option value="">Select</option>
+
+                    {% for i in incumbents %}
+
+                    <option value="{{ i }}">
+                        {{ i }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Campaign Spending (₹)</label>
+                <input type="number" name="spending" class="small-input">
+            </div>
+
+            <div class="form-group three">
+                <label>Urban / Rural</label>
+                <select name="urban">
+
+                    <option value="">Select Area</option>
+
+                    {% for u in urban_rural %}
+
+                    <option value="{{ u }}">
+                        {{ u }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <div class="form-group three">
+                <label>Education</label>
+                <select name="education">
+
+                    <option value="">Select Education</option>
+
+                    {% for education in educations %}
+
+                    <option value="{{ education }}">
+                        {{ education }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <div class="form-group three">
+                <label>Criminal Cases</label>
+                <select name="criminal">
+
+                    <option value="">Select Cases</option>
+
+                    {% for c in criminal_cases %}
+
+                    <option value="{{ c }}">
+                        {{ c }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Assets (₹)</label>
+                <input type="number" name="assets">
+            </div>
+
+            <div class="form-group">
+                <label>Liabilities (₹)</label>
+                <input type="number" name="liabilities">
+            </div>
+
+        </div>
+
+        <button type="submit" class="predict-btn">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Predict Winner
+        </button>
+
+    </form>
+
+</div>
+
+<div class="result-card"> 
+    <h2 class="result-title">
+        <i class="fa-solid fa-brain"></i>
+        Prediction Result
+    </h2>
+
+    {% if predicted_party %}
+
+    <div class="prediction-box">
+
+        <div class="prediction-column">
+
+            <p class="prediction-label">
+                Predicted Winning Party
+            </p>
+
+            <h1 class="party-text">
+                {{ predicted_party }}
+            </h1>
+
+        </div>
+
+        <div class="prediction-divider"></div>
+
+        <div class="prediction-column">
+
+            <p class="prediction-label">
+                Winning Probability
+            </p>
+
+            <h1 class="probability-text">
+                {{ probability }}%
+            </h1>
+
+            </div>
+
+            </div>
+
+            <div class="progress-container">
+
+        <div class="progress-fill"style="width: {{ probability }}%;"></div>
+
+    </div>
+
+    <div class="prediction-stats">
+
+        <div class="prediction-card">
+
+            <h4>Model Accuracy</h4>
+
+            <span>{{ accuracy }}%</span>
+
+            <small>✓ Trained Model</small>
+
+        </div>
+
+        <div class="prediction-card">
+
+            <h4>Total Constituencies</h4>
+
+            <span>{{ total_constituencies }}</span>
+
+            <small>(Trained On)</small>
+
+        </div>
+
+        <div class="prediction-card">
+
+            <h4>Total Parties</h4>
+
+            <span>{{ total_parties }}</span>
+
+            <small>(Trained On)</small>
+
+        </div>
+
+    </div>
+
+    <div class="factor-card">
+
+        <h3>Top Factors Influencing Prediction</h3>
+
+        <div class="factor-row">
+
+            <span>Vote Share (%)</span>
+
+            <div class="factor-bar">
+                <div class="factor-fill"
+                    style="width:{{ vote_share }}%;">
+                </div>
+            </div>
+
+            <strong>{{ vote_share }}%</strong>
+
+        </div>
+
+        <div class="factor-row">
+
+            <span>Campaign Spending</span>
+
+            <div class="factor-bar">
+                <div class="factor-fill"
+                    style="width:80%;">
+                </div>
+            </div>
+
+            <strong>₹ {{ spending }}</strong>
+
+        </div>
+
+        <div class="factor-row">
+
+            <span>Incumbency</span>
+
+            <div class="factor-bar">
+                <div class="factor-fill"
+                    style="width:{% if incumbent=='Yes' %}90{% else %}40{% endif %}%;">
+                </div>
+            </div>
+
+            <strong>{{ incumbent }}</strong>
+
+        </div>
+
+        <div class="factor-row">
+
+            <span>Winning Margin</span>
+
+            <div class="factor-bar">
+                <div class="factor-fill"
+                    style="width:{{ margin }}%;">
+                </div>
+            </div>
+
+            <strong>{{ margin }}%</strong>
+
+        </div>
+
+        <div class="factor-row">
+
+            <span>Votes Polled</span>
+
+            <div class="factor-bar">
+                <div class="factor-fill"
+                    style="width:75%;">
+                </div>
+            </div>
+
+            <strong>{{ votes }}</strong>
+
+        </div>
+
+    </div>
+
+
+
+    {% else %}
+
+    <div class="prediction-box">
+
+        <div class="prediction-column">
+
+            <p class="prediction-label">
+                Predicted Winning Party
+            </p>
+
+            <h1 class="party-text">
+                --
+            </h1>
+
+        </div>
+
+        <div class="prediction-divider"></div>
+
+        <div class="prediction-column">
+
+            <p class="prediction-label">
+                Winning Probability
+            </p>
+
+            <h1 class="probability-text">
+                0%
+            </h1>
+
+        </div>
+
+    </div>
+
+    <div class="progress-container">
+
+        <div class="progress-fill" style="width:0%;"></div>
+
+
+    </div>
+
+<div class="factor-card">
+
+    <h3>Top Factors Influencing Prediction</h3>
+
+    <div class="factor-row">
+
+        <span>Vote Share (%)</span>
+
+        <div class="factor-bar">
+            <div class="factor-fill"
+                 style="width:{{ vote_share }}%;">
+            </div>
+        </div>
+
+        <strong>{{ vote_share }}%</strong>
+
+    </div>
+
+    <div class="factor-row">
+
+        <span>Campaign Spending</span>
+
+        <div class="factor-bar">
+            <div class="factor-fill"
+                 style="width:80%;">
+            </div>
+        </div>
+
+        <strong>₹ {{ spending }}</strong>
+
+    </div>
+
+    <div class="factor-row">
+
+        <span>Incumbency</span>
+
+        <div class="factor-bar">
+            <div class="factor-fill"
+                 style="width:{% if incumbent=='Yes' %}90{% else %}40{% endif %}%;">
+            </div>
+        </div>
+
+        <strong>{{ incumbent }}</strong>
+
+    </div>
+
+    <div class="factor-row">
+
+        <span>Winning Margin (%)</span>
+
+        <div class="factor-bar">
+            <div class="factor-fill"
+                 style="width:{{ margin }}%;">
+            </div>
+        </div>
+
+        <strong>{{ margin }}%</strong>
+
+    </div>
+
+    <div class="factor-row">
+
+        <span>Votes Polled</span>
+
+        <div class="factor-bar">
+            <div class="factor-fill"
+                 style="width:75%;">
+            </div>
+        </div>
+
+        <strong>{{ votes }}</strong>
+
+    </div>
+
+</div>   
+<div class="prediction-footer">
+
+    <div class="footer-info">
+
+        <div class="info-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div class="info-text">
+
+            <p>
+                This prediction is generated using a Machine Learning model trained on a realistic synthetic election campaign dataset based on the 2009, 2014, 2019, and 2024 Lok Sabha election years.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="footer-buttons">
+
+        <button type="button" class="detail-btn">
+            <i class="fa-solid fa-eye"></i>
+            View Details
+        </button>
+
+        <button type="button"
+                class="another-btn"
+                onclick="window.location='/prediction'">
+
+            <i class="fa-solid fa-rotate-right"></i>
+            Predict Another
+
+        </button>
+
+    </div>
+
+</div>
+
+
+{% endif %}
+
+</div>
+
+
+
+<script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
+
+</body>
+
+</html>

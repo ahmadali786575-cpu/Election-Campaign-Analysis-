@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Campaign Analysis</title>
+
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/sidebar.css">
+    <link rel="stylesheet" href="../static/css/header.css">
+    <link rel="stylesheet" href="../static/css/cards.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/charts.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Sidebar Starts -->
+
+    <div class="sidebar" id="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                <i class="fa-solid fa-chart-column"></i>
+            </div>
+
+            <h2>Data Alchemists</h2>
+
+        </div>
+
+        <div class="menu">
+
+            <p class="title">MAIN</p>
+
+            
+            <a href="#" class="menu-item active">
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Constituencies</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-user"></i>
+                <span>Candidates</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-flag"></i>
+                <span>Parties</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-users"></i>
+                <span>Voters</span>
+            </a>
+
+            <p class="title">ANALYTICS</p>
+
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Campaign Analysis</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-coins"></i>
+                <span>Expenditure Analysis</span>
+            </a>
+
+            <a href="{{ url_for('voting_analysis') }}" class="menu-item">
+                <i class="fa-solid fa-square-poll-vertical"></i>
+                <span>Voting Analysis</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Party Performance</span>
+            </a>
+
+            <p class="title">PREDICTION</p>
+
+            <a href="{{ url_for('prediction') }}" class="menu-item">
+                <i class="fa-solid fa-brain"></i>
+                <span>ML Prediction</span>
+            </a>
+
+            <p class="title">MORE</p>
+
+            <a href="#" class="menu-item">
+                <i class="fa-solid fa-file-lines"></i>
+                <span>Reports</span>
+            </a>
+
+            <a href="{{ url_for('about') }}" class="menu-item">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>About Project</span>
+            </a>
+
+            
+
+        </div>
+
+    </div>
+    <!-- ================= HEADER ================= -->
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <div class="main-content" id="main-content">
+
+    <header class="header">
+
+    <div class="header-left">
+
+        <div class="menu-btn" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <div class="title">
+
+            <h1>Election Campaign Analysis</h1>
+
+            <p>
+                Comprehensive overview of election campaign insights and performance
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="header-right">
+
+        <div class="year-filter">
+
+            <label>Select Election Year :</label>
+
+            <select id="yearSelect">
+
+                <option value="All" {% if selected_year=="All" %}selected{% endif %}>
+                    All Years
+                </option>
+
+                <option value="2009" {% if selected_year=="2009" %}selected{% endif %}>2009</option>
+                <option value="2014" {% if selected_year=="2014" %}selected{% endif %}>2014</option>
+                <option value="2019" {% if selected_year=="2019" %}selected{% endif %}>2019</option>
+                <option value="2024" {% if selected_year=="2024" %}selected{% endif %}>2024</option>
+
+            </select>
+
+        </div>
+
+        <div class="icon">
+            <i class="fa-regular fa-bell"></i>
+        </div>
+
+        <div class="icon">
+            <i class="fa-solid fa-gear"></i>
+        </div>
+
+        <div class="profile">
+
+            <div class="profile-img">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <span>Admin</span>
+
+
+        </div>
+
+    </div>
+
+</header>
+
+<!-- ⭐⭐⭐ PASTE KPI CARDS HERE ⭐⭐⭐ -->
+
+<div class="cards">
+
+    <div class="card">
+        <div class="card-icon purple">
+            <i class="fa-solid fa-users"></i>
+        </div>
+
+        <div class="card-info">
+            <h4>Total Constituencies</h4>
+            <h2>{{ total_constituencies }}</h2>
+            <p>Selected 10 States</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-icon blue">
+            <i class="fa-solid fa-user"></i>
+        </div>
+
+        <div class="card-info">
+            <h4>Total Candidates</h4>
+            <h2>{{ total_candidates }}</h2>
+            <p>Contestants</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-icon green">
+            <i class="fa-solid fa-square-poll-vertical"></i>
+        </div>
+
+        <div class="card-info">
+            <h4>Total Votes</h4>
+            <h2>{{ "{:.1f}".format(total_votes / 1000000) }} M</h2>
+            <p>Votes Polled</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-icon orange">
+            <i class="fa-solid fa-coins"></i>
+        </div>
+
+        <div class="card-info">
+            <h4>Total Expenditure</h4>
+            <h2>₹ {{ "{:,.0f}".format(total_expenditure) }} Cr</h2>
+            <p>Campaign Spending</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-icon pink">
+            <i class="fa-solid fa-flag"></i>
+        </div>
+
+        <div class="card-info">
+            <h4>Total Parties</h4>
+            <h2>{{ total_parties }}</h2>
+            <p>Registered Parties</p>
+        </div>
+    </div>
+</div>
+    
+<div class="charts">
+
+    <div class="chart-card">
+
+        <h3>Votes Polled Over the Years (Millions)</h3>
+
+        <canvas id="votesChart"></canvas>
+
+    </div>
+
+    <div class="chart-card">
+
+        <h3>Vote Share by Top Parties (%)</h3>
+
+        <canvas id="partyChart"></canvas>
+
+    </div>
+
+</div>
+    <div class="charts">
+
+        <div class="chart-card">
+            <h3>Votes Trend Over the Years (Millions)</h3>
+            <canvas id="stateChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h3>Total Campaign Spending Over the Years (₹ Crore)</h3>
+            <canvas id="trendChart"></canvas>
+        </div>
+
+    </div>
+
+    <div class="charts">
+
+        <div class="chart-card">
+            <h3>Top Winning Parties</h3>
+            <canvas id="winnerChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h3>Top Candidates by Votes (Lakhs)</h3>
+            <canvas id="candidateChart"></canvas>
+        </div>
+
+    </div>
+    <!-- ================= Recent Election Highlights ================= -->
+
+<div class="highlights">
+
+    <h3>Recent Election Highlights</h3>
+
+    <div class="highlight-grid">
+
+        <div class="highlight-card">
+            <i class="fa-solid fa-chart-line purple"></i>
+            <div>
+                <h5>Highest Votes Polled</h5>
+                <h2>{{ highest_votes }} M</h2>
+                <p>Across Elections</p>
+            </div>
+        </div>
+
+        <div class="highlight-card">
+            <i class="fa-solid fa-chart-pie blue"></i>
+            <div>
+                <h5>Highest Vote Share</h5>
+                <h2>{{ highest_vote_share }}%</h2>
+                <p>Highest Candidate</p>
+            </div>
+        </div>
+
+        <div class="highlight-card">
+            <i class="fa-solid fa-trophy green"></i>
+            <div>
+                <h5>Most Seats Won</h5>
+                <h2>{{ top_seats }}</h2>
+                <p>{{ top_party }}</p>
+            </div>
+        </div>
+
+        <div class="highlight-card">
+            <i class="fa-solid fa-coins orange"></i>
+            <div>
+                <h5>Highest Spending</h5>
+                <h2>₹ {{ highest_spending }} Cr</h2>
+                <p>Campaign Spending</p>
+            </div>
+        </div>
+
+        <div class="highlight-card">
+            <i class="fa-solid fa-flag pink"></i>
+            <div>
+                <h5>Total Parties</h5>
+                <h2>{{ registered_parties }}</h2>
+                <p>Registered Parties</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+const years = {{ years|tojson }};
+const votes = {{ votes|tojson }};
+
+
+const parties = {{ parties|tojson }};
+const vote_share = {{ vote_share|tojson }};
+
+console.log("Vote Share from Flask:", vote_share);
+
+const states = {{ states|tojson }};
+const state_votes = {{ state_votes|tojson }};
+
+const trend_years = {{ trend_years|tojson }};
+const trend_votes = {{ trend_votes|tojson }};
+
+const winner_parties = {{ winner_parties|tojson }};
+const winner_counts = {{ winner_counts|tojson }};
+
+const top_candidates = {{ top_candidates|tojson }};
+const candidate_votes = {{ candidate_votes|tojson }};
+</script>
+
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script>
+document.getElementById("yearSelect").addEventListener("change", function () {
+
+    window.location.href = "/?year=" + this.value;
+
+});
+</script>
+</body>
+
+
+</html>

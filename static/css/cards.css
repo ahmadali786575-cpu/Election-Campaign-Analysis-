@@ -1,0 +1,280 @@
+/* ================= KPI CARDS ================= */
+
+.cards{
+
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+
+    gap:20px;
+    width:100%;
+    margin:30px 0;
+
+    overflow-x:auto;
+    overflow-y:hidden;
+
+    scroll-behavior:smooth;
+
+    cursor:grab;
+
+    padding:15px 0;
+
+    margin-top:10px;
+
+    user-select:none;
+
+    align-items:center;
+
+    -ms-overflow-style:none;
+    scrollbar-width:none;
+
+}
+
+.cards::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+/* Card */
+
+.card{
+
+    min-width:0px;
+    max-width:280px;
+
+    height:120px;
+
+    background:#121B2D;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:18px;
+
+    padding:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;        /* ← You forgot px */
+
+    flex-shrink:0;
+
+    overflow:hidden;
+
+    flex:1;
+    transition:.3s ease;
+
+
+    box-shadow:0 0 12px rgba(0,0,0,.25);
+
+}
+
+.card:hover{
+
+    transform:translateY(-5px);
+
+    border-color:#6D5BFF;
+
+}
+
+/* Icon */
+
+.card-icon{
+
+    width:68px;
+
+    height:68px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    font-size:28px;
+
+    flex-shrink:0;
+
+}
+
+/* Right Side */
+
+.card-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+}
+
+/* Title */
+
+.card-info h4{
+
+    font-size:15px;
+
+    color:#AEB7C7;
+
+    margin-bottom:6px;
+
+    font-weight:500;
+
+}
+
+/* Number */
+
+.card-info h2{
+
+    font-size:29px;
+
+    color:white;
+
+    font-weight:700;
+
+    line-height:1.1;
+
+    margin-bottom:6px;
+
+    white-space:nowrap;
+
+}
+
+/* Subtitle */
+
+.card-info p{
+
+    font-size:14px;
+
+    color:#9BA5B7;
+
+}
+
+.purple{
+    background:linear-gradient(135deg,#6D28D9,#8B5CF6);
+}
+
+.blue{
+    background:linear-gradient(135deg,#2563EB,#3B82F6);
+}
+
+.green{
+    background:linear-gradient(135deg,#16A34A,#22C55E);
+}
+
+.orange{
+    background:linear-gradient(135deg,#F59E0B,#FBBF24);
+}
+
+.pink{
+    background:linear-gradient(135deg,#EC4899,#F472B6);
+}
+
+
+/* ===================== Recent Election Highlights ===================== */
+
+.highlights{
+    margin-top:30px;
+    background:#182235;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    padding:20px 20px 50px 20px;   /* 30px extra at the bottom */
+}
+
+.highlights h3{
+
+    color:#fff;
+    margin-bottom:18px;
+    font-size:22px;
+
+}
+
+.highlight-grid{
+
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:18px;
+
+}
+
+.highlight-card{
+
+    background:#1f2937;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    padding:18px;
+
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+    transition:.3s;
+
+}
+
+.highlight-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.highlight-card i{
+
+    font-size:28px;
+
+}
+
+.highlight-card h5{
+
+    color:#b5bfd6;
+    font-size:13px;
+    margin-bottom:6px;
+
+}
+
+.highlight-card h2{
+
+    color:#fff;
+    margin-bottom:4px;
+    font-size:28px;
+
+}
+
+.highlight-card p{
+
+    color:#8b95ab;
+    font-size:13px;
+
+}
+
+.purple{color:#a855f7;}
+.blue{color:#3b82f6;}
+.green{color:#4ade80;}
+.orange{color:#f59e0b;}
+.pink{color:#ec4899;}
+
+@media(max-width:1200px){
+
+.highlight-grid{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:700px){
+
+.highlight-grid{
+
+grid-template-columns:1fr;
+
+}
+
+}

@@ -1,0 +1,98 @@
+<!-- Toggle Button (Always Visible) -->
+<div class="menu-toggle" onclick="toggleSidebar()">
+    <i class="fa-solid fa-bars"></i>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+
+    <!-- Logo -->
+    <div class="logo">
+        <div class="logo-icon">
+            <i class="fa-solid fa-chart-column"></i>
+        </div>
+        <h2>Data Alchemists</h2>
+    </div>
+
+    <!-- Menu -->
+    <div class="menu">
+
+        <!-- MAIN -->
+        <p class="title">MAIN</p>
+
+        <a href="{{ url_for('dashboard') }}"
+           class="menu-item {% if active_page == 'dashboard' %}active{% endif %}">
+            <i class="fa-solid fa-house"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Constituencies</span>
+        </a>
+
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-user"></i>
+            <span>Candidates</span>
+        </a>
+
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-flag"></i>
+            <span>Parties</span>
+        </a>
+
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-users"></i>
+            <span>Voters</span>
+        </a>
+
+        <!-- ANALYTICS -->
+        <p class="title">ANALYTICS</p>
+
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Campaign Analysis</span>
+        </a>
+
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-coins"></i>
+            <span>Expenditure Analysis</span>
+        </a>
+
+        <a href="{{ url_for('voting_analysis') }}"
+           class="menu-item {% if active_page == 'voting' %}active{% endif %}">
+            <i class="fa-solid fa-square-poll-vertical"></i>
+            <span>Voting Analysis</span>
+        </a>
+
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Party Performance</span>
+        </a>
+
+        <!-- PREDICTION -->
+        <p class="title">PREDICTION</p>
+
+        <a href="{{ url_for('prediction') }}"
+           class="menu-item {% if active_page == 'prediction' %}active{% endif %}">
+            <i class="fa-solid fa-brain"></i>
+            <span>ML Prediction</span>
+        </a>
+
+        <!-- MORE -->
+        <p class="title">MORE</p>
+
+        <a href="#" class="menu-item">
+            <i class="fa-solid fa-file-lines"></i>
+            <span>Reports</span>
+        </a>
+
+        <a href="{{ url_for('about') }}"
+           class="menu-item {% if active_page == 'about' %}active{% endif %}">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>About Project</span>
+        </a>
+
+    </div>
+
+</div>

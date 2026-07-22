@@ -1,0 +1,210 @@
+/*================ HEADER ================*/
+
+.header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    margin-top:-8px;
+    margin-bottom:25px;
+    width:100%;
+
+}
+
+/* Left */
+
+.header-left{
+
+    display:flex;
+    align-items:center;
+
+    gap:20px;
+
+}
+
+.header-left h1{
+
+    font-size:42px;
+
+    white-space:nowrap;
+
+}
+
+.menu-btn{
+
+    width:45px;
+
+    height:45px;
+
+    background:#111C33;
+
+    border-radius:10px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+}
+
+.title h1{
+
+    font-size:38px;
+
+    font-weight:700;
+
+    color:#fff;
+    position: relative;
+    margin-top:-20px;
+
+}
+
+.title p{
+
+    color:#8E96A9;
+
+    margin-top:2px;
+
+    font-size:15px;
+
+}
+
+/* Right */
+
+.header-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.year-filter{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    background:#111C33;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+}
+
+.year-filter label{
+
+    color:#bbb;
+
+    font-size:14px;
+
+}
+
+.year-filter select{
+
+    background:#121B2D;
+
+    color:#fff;
+
+    border:none;          /* Remove border */
+
+    outline:none;         /* Remove outline */
+
+    box-shadow:none;      /* Remove shadow */
+
+    appearance:none;      /* Remove default browser style */
+
+    -webkit-appearance:none;
+
+    -moz-appearance:none;
+
+    padding:10px 35px 10px 15px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+}
+
+/* Icons */
+
+.icon{
+
+    width:45px;
+
+    height:45px;
+
+    background:#111C33;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.icon:hover{
+
+    background:#6E3AFF;
+
+}
+
+/* Profile */
+
+.profile{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    cursor:pointer;
+
+}
+
+.profile-img{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    background:#6E3AFF;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.profile span{
+
+    font-size:15px;
+
+    font-weight:600;
+
+}
