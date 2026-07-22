@@ -779,10 +779,6 @@ def predict():
             total_records=len(df)
         )
 
-    # ==========================
-    # POST Request (Predict)
-    # ==========================
-
     state = request.form["state"]
     constituency = request.form["constituency"]
     age = int(request.form["age"])
