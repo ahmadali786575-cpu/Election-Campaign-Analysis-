@@ -755,9 +755,33 @@ def prediction():
 
         total_records=len(filtered_df)
     )
-
-@app.route("/predict", methods=["POST"])
+@app.route("/predict", methods=["GET", "POST"])
 def predict():
+
+    # Prediction page open karne ke liye
+    if request.method == "GET":
+        return render_template(
+            "prediction.html",
+            active_page="prediction",
+
+            accuracy=model_accuracy,
+
+            states=sorted(df["State"].unique()),
+            constituencies=sorted(df["Constituency"].unique()),
+            candidates=sorted(df["Candidate"].unique()),
+            educations=sorted(df["Education"].unique()),
+            urban_rural=sorted(df["Urban_Rural"].unique()),
+            incumbents=sorted(df["Incumbent"].unique()),
+            criminal_cases=sorted(df["Criminal_Cases"].unique()),
+
+            total_constituencies=df["Constituency"].nunique(),
+            total_parties=df["Party"].nunique(),
+            total_records=len(df)
+        )
+
+    # ==========================
+    # POST Request (Predict)
+    # ==========================
 
     state = request.form["state"]
     constituency = request.form["constituency"]
@@ -785,58 +809,40 @@ def predict():
         "Incumbent": incumbent
     }])
 
-    print("Sample:")
-    print(sample)
-
-    print("Sample Columns:")
-    print(sample.columns.tolist())
-
-    print("Model Features:")
-    print(model.feature_names_in_)
     prediction = model.predict(sample)[0]
 
     probability = round(
-    max(model.predict_proba(sample)[0]) * 100,
-    2
-)
-
-
+        max(model.predict_proba(sample)[0]) * 100,
+        2
+    )
 
     return render_template(
-    "prediction.html",
+        "prediction.html",
 
-    active_page="dashboard",
-    predicted_party=prediction,
-    probability=round(probability,2),
+        active_page="prediction",
 
-    accuracy=model_accuracy,
+        predicted_party=prediction,
+        probability=probability,
 
-    spending=spending,
-    incumbent=incumbent,
+        accuracy=model_accuracy,
 
-    selected_year="All",
+        spending=spending,
+        incumbent=incumbent,
 
+        selected_year="All",
 
-    states=sorted(df["State"].unique()),
+        states=sorted(df["State"].unique()),
+        constituencies=sorted(df["Constituency"].unique()),
+        candidates=sorted(df["Candidate"].unique()),
+        educations=sorted(df["Education"].unique()),
+        urban_rural=sorted(df["Urban_Rural"].unique()),
+        incumbents=sorted(df["Incumbent"].unique()),
+        criminal_cases=sorted(df["Criminal_Cases"].unique()),
 
-    constituencies=sorted(df["Constituency"].unique()),
-
-    candidates=sorted(df["Candidate"].unique()),
-
-    educations=sorted(df["Education"].unique()),
-
-    urban_rural=sorted(df["Urban_Rural"].unique()),
-
-    incumbents=sorted(df["Incumbent"].unique()),
-
-    criminal_cases=sorted(df["Criminal_Cases"].unique()),
-
-    total_constituencies=df["Constituency"].nunique(),
-
-    total_parties=df["Party"].nunique(),
-
-    total_records=len(df)
-)
+        total_constituencies=df["Constituency"].nunique(),
+        total_parties=df["Party"].nunique(),
+        total_records=len(df)
+    )
 if __name__ == "__main__":
     app.run(debug=True)
 
